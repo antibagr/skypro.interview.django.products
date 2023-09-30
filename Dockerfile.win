@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 # Windows does not support BuildKit yet, so we need to use the old syntax
 # Reference: https://github.com/moby/buildkit/issues/616
 FROM python:3.11.4-slim-buster
@@ -15,10 +17,17 @@ ENV POETRY_NO_INTERACTION=1 \
 
 WORKDIR /app
 
+RUN apt-get update && apt-get install netcat -y \
+    && rm -rf /var/lib/apt/lists/*
+COPY ./scripts/entrypoint.sh ./entrypoint.sh
+RUN sed -i 's/\r$//g' ./entrypoint.sh
+RUN chmod +x ./entrypoint.sh
+
 COPY pyproject.toml poetry.lock ./
 
 RUN poetry install --without dev --no-root && rm -rf $POETRY_CACHE_DIR
 
 COPY app /app/app/
 
-ENTRYPOINT ["poetry", "run", "python", "app/manage.py", "runserver", "0.0.0.0:8000"]
+ENTRYPOINT ["./entrypoint.sh"]
+CMD ["poetry", "run", "python", "app/manage.py", "runserver", "0.0.0.0:8000"]
