@@ -1,0 +1,93 @@
+[tool.poetry]
+name = "skypro.interview.django.products"
+version = "0.0.1"
+description = "Interview project for Skypro"
+authors = ["Anthony Bagrianov <rudiemeant@gmail.com>"]
+maintainers = ["Anthony Bagrianov <rudiemeant@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "3.11.4"
+uvloop = {version = "0.17.0", markers = "sys_platform == 'linux' or sys_platform == 'darwin'"}
+django = "4.2.5"
+djangorestframework = "3.14.0"
+
+[tool.poetry.group.dev.dependencies]
+autopep8 = "2.0.1"
+bandit = "1.7.4"
+black = "23.1.0"
+coverage = "7.2.0"
+flake8 = "6.0.0"
+flake8-bugbear = "23.2.13"
+flake8-print = "5.0.0"
+flake8-pytest-style = "1.7.2"
+flake8-simplify = "0.19.3"
+flake8-unused-arguments = "0.0.13"
+isort = "5.12.0"
+pytest = "7.2.1"
+pytest-asyncio = "0.20.3"
+mypy = "1.4.1"
+djangorestframework-stubs = {version = "3.14.2", extras = ["compatible-mypy"]}
+django-stubs = {version = "4.2.3", extras = ["compatible-mypy"]}
+
+[tool.black]
+line-length = 100
+
+[tool.autopep8]
+max_line_length = 100
+in-place = true
+recursive = true
+aggressive = 3
+select = ["E203", "W503"]
+
+[tool.isort]
+profile = "black"
+line_length = 100
+wrap_length = 100
+multi_line_output = 3
+combine_as_imports = true
+force_alphabetical_sort_within_sections = true
+overwrite_in_place = true
+
+[tool.mypy]
+plugins = [
+    "mypy_django_plugin.main",
+    "mypy_drf_plugin.main",
+]
+python_version = "3.11"
+follow_imports = "silent"
+warn_return_any = true
+warn_redundant_casts = true
+warn_unused_configs = true
+warn_unused_ignores = true
+check_untyped_defs = true
+no_implicit_reexport = true
+namespace_packages = true
+
+[tool.django-stubs]
+django_settings_module = "app.app.settings"
+
+[[tool.mypy.overrides]]
+module = [
+# Specify imports to ignore if type hints are not available, e.g.:
+#    "betterconf.*",
+]
+ignore_missing_imports = true
+
+[tool.bandit]
+skips = ["B104"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "strict"
+pythonpath = ["."]
+
+[tool.coverage.run]
+source = ["app"]
+
+[tool.coverage.report]
+exclude_lines = [
+    # Skip any pass lines such as may be used for @abstractmethod.
+    "pass",
+
+    # Don't complain if tests don't hit defensive assertion code.
+    "raise NotImplementedError",
+]
