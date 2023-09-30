@@ -32,7 +32,7 @@ run: ## Run the project
 tests-units: ## Run unit tests
 	poetry run coverage run -m pytest -s --junitxml=report.xml ./tests/units
 	poetry run coverage html
-	# NB (a.kurbatov): Remove "|| true" when coverage level reach 80%.
+	# NB: Remove "|| true" when coverage level reach 80%.
 	poetry run coverage report --precision=2 --fail-under=80 || true
 .PHONY: tests-units
 
@@ -40,5 +40,5 @@ tests-integrations: ## Run integration tests
 	poetry run pytest tests/integrations
 .PHONY: tests-integrations
 
-tests: tests-units tests-integrations ## Run all available tests
-.PHONY: tests
+test: tests-units tests-integrations ## Run all available tests
+.PHONY: test

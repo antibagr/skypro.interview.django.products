@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="0.231" timestamp="2023-09-30T05:32:23.014319" hostname="Rockmobile"><testcase classname="tests.units.test_app.test_main.TestMain" name="test_main" time="0.017" /></testsuite></testsuites>

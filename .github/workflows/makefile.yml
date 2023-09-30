@@ -31,3 +31,6 @@ jobs:
       
       - name: Lint the source code
         run: make lint
+
+      - name: Test the source code
+        run: make test
