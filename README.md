@@ -1,0 +1,1 @@
+Skypro Interview Django Products App
