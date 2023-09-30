@@ -7,12 +7,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      
       - name: Install Python
         uses: actions/setup-python@v4
         # see details (matrix, python-version, python-version-file, etc.)
         # https://github.com/actions/setup-python
+      
       - name: Install poetry
         uses: abatilo/actions-poetry@v2
+      
       - name: Setup a local virtual environment (if no poetry.toml file)
         run: |
           poetry config virtualenvs.create true --local
@@ -22,10 +25,12 @@ jobs:
         with:
           path: ./.venv
           key: venv-${{ hashFiles('poetry.lock') }}
+      
       - name: Install the project dependencies
         run: poetry install
-      - name: Run the automated tests (for example)
-        run: poetry -v
+      
+      - name: Lint the source code
+        run: make lint
 
   # build:
 
