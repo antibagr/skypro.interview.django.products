@@ -2,6 +2,9 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from typing import cast
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", cast(str, os.environ.get("DJANGO_SETTINGS_MODULE")))
 
 
 def main():

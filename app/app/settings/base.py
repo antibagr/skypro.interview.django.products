@@ -18,8 +18,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY: str = cast(str, os.environ.get("SECRET_KEY"))
 
-DEBUG: bool = bool(os.environ.get("DEBUG"))
-
 ALLOWED_HOSTS: list[str] = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(" ")
 
 
@@ -72,7 +70,7 @@ DATABASES = {
         "USER": os.environ.get("DB_USER", "user"),
         "PASSWORD": os.environ.get("DB_PASSWORD", "password"),
         "HOST": os.environ.get("DB_HOST", "localhost"),
-        "PORT": os.environ.get("DB_PORT", "5432"),
+        "PORT": int(os.environ.get("DB_PORT", "5432")),
     }
 }
 
@@ -107,11 +105,11 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "../", "mediafiles")
 
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "../", "staticfiles")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

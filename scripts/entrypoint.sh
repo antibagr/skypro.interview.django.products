@@ -10,7 +10,12 @@ if [ "$DATABASE" = "postgres" ]; then
     echo "PostgreSQL started"
 fi
 
+echo 'Running migrations...'
+
 poetry run python app/manage.py flush --no-input
 poetry run python app/manage.py migrate
+
+echo 'Collecting static files...'
+poetry run python app/manage.py collectstatic --no-input
 
 exec "$@"
