@@ -9,6 +9,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Install poetry
         run: pipx install poetry
+        # https://github.com/actions/setup-python/tree/main
       - uses: actions/setup-python@v4
         with:
           python-version-file: 'pyproject.toml'
