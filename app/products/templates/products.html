@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}
+Products
+{% endblock %}
+<style>
+    table.dataTable thead .sorting:after,
+    table.dataTable thead .sorting:before,
+    table.dataTable thead .sorting_asc:after,
+    table.dataTable thead .sorting_asc:before,
+    table.dataTable thead .sorting_asc_disabled:after,
+    table.dataTable thead .sorting_asc_disabled:before,
+    table.dataTable thead .sorting_desc:after,
+    table.dataTable thead .sorting_desc:before,
+    table.dataTable thead .sorting_desc_disabled:after,
+    table.dataTable thead .sorting_desc_disabled:before {
+        bottom: .5em;
+    }
+
+    .table-fit {
+        width: 1px;
+    }
+</style>
+{% block content %}
+<table id="productsTable" class="table table-fit table-hover table-striped table-sm table-bordered" cellspacing="0"
+    width="100%">
+    <thead>
+        <tr>
+            <th scope="col" class="th-sm">#</th>
+            <th scope="col" class="th-sm">Name</th>
+            <th scope="col" class="th-sm">Category</th>
+            <th scope="col" class="th-sm">Active</th>
+            <th scope="col" class="th-sm">Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <th scope="row">{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.category }}</td>
+            <td>{{ product.is_active }}</td>
+            <td>{{ product.price }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script>
+    $(document).ready(async () => {
+        $('#productsTable').DataTable({
+            "aaSorting": [],
+            columnDefs: [{
+                orderable: false,
+                targets: 3
+            }]
+        });
+        $('.dataTables_length').addClass('bs-select');
+    });
+</script>
+{% endblock %}
