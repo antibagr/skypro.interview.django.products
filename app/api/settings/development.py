@@ -8,3 +8,5 @@ DATABASES = {
         "NAME": "db.sqlite3",
     }
 }
+
+STATICFILES_DIRS = [BASE_DIR.parent / "static"]

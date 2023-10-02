@@ -56,7 +56,7 @@ def get_products(year: int, month: int) -> QuerySet:
             "last_month_sales",
             "current_month_sales",
         )
-        .all()
+        .all()[:100]
     )
 
 

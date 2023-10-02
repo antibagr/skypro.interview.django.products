@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,15 +8,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}{% endblock %}</title>
 
+
+    <!-- Icon -->
+
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/icon/favicon.ico' %}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'images/icon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'images/icon/site.webmanifest' %}">
+    <link rel="mask-icon" href="{% static 'images/icon/safari-pinned-tab.svg' %}" color="#5bbad5">
+    <meta name="apple-mobile-web-app-title" content="Skypro Products">
+    <meta name="application-name" content="Skypro Products">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+
+    <!-- CSS & Fonts -->
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
         crossorigin="anonymous">
+
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css" rel="stylesheet" />
-    
+
     <link href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css" rel="stylesheet">
 </head>
 
@@ -22,18 +42,18 @@
     <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
         integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
- 
+
     <script src="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.js"></script>
 
     <div class="container">
-        <ul class="nav bg-info">
+        <ul class="nav p-2 mb-2 bg-primary text-white">
             <li class="nav-item">
-                <a class="nav-link link-light" href="/">HOME</a>
+                <a class="nav-link link-light" href="/">SKYPRODUCT</a>
             </li>
         </ul>
 
-        {% block content %}
-        {% endblock %}
+            {% block content %}
+            {% endblock %}
     </div>
 </body>
 
