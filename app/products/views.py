@@ -1,7 +1,7 @@
 import calendar
 from datetime import datetime
 
-from django.db.models import Q, Sum
+from django.db.models import Q, Sum, QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.template.defaulttags import register
@@ -25,19 +25,27 @@ def month_sales_queryset(year: int, month: int) -> Sum:
     )
 
 
-@register.filter
-def get_item(dictionary: dict[str, str], key: str) -> str:
-    return dictionary[key]
+def get_products(year: int, month: int) -> QuerySet:
+    """
+    Parameters
+    ----------
+    year : int
+        The year to filter monthly sales by.
+    month : int
+        The month to filter monthly sales by.
 
+    Returns
+    -------
+    `QuerySet`
+        A queryset of all products with the following annotations:
+        - last_month_sales: the sum of the quantity of all cart items purchased in the previous month
+        - current_month_sales: the sum of the quantity of all cart items purchased in the current month
+    """
 
-def index(request: HttpRequest) -> HttpResponse:
-    now = datetime.now(tz=timezone.utc)
-    current_year, current_month = now.year, now.month
-
-    products = (
+    return (
         Product.objects.annotate(
-            last_month_sales=month_sales_queryset(current_year, current_month - 1),
-            current_month_sales=month_sales_queryset(current_year, current_month),
+            last_month_sales=month_sales_queryset(year=year, month=month - 1),
+            current_month_sales=month_sales_queryset(year=year, month=month),
         )
         .values_list(
             "id",
@@ -51,9 +59,31 @@ def index(request: HttpRequest) -> HttpResponse:
         .all()
     )
 
-    categories = {category.id: category.name for category in Category.objects.all()}
 
-    print(len(products))
+def get_categories_names() -> dict[str, str]:
+    """
+    Returns
+    -------
+    dict[str, str]
+        A dictionary of category ids and names.
+    """
+    return {
+        category["id"]: category["name"] for category in Category.objects.values("id", "name").all()
+    }
+
+
+@register.filter
+def get_item(dictionary: dict[str, str], key: str) -> str:
+    return dictionary[key]
+
+
+def index(request: HttpRequest) -> HttpResponse:
+    now = datetime.now(tz=timezone.utc)
+    current_year, current_month = now.year, now.month
+
+    products = get_products(year=current_year, month=current_month)
+
+    categories = get_categories_names()
 
     return render(
         request,

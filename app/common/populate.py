@@ -42,8 +42,6 @@ def populate() -> None:
                 is_active=fake.boolean(),
             )
 
-    return
-
     # Create 100 customers
 
     USER_MODEL = get_user_model()

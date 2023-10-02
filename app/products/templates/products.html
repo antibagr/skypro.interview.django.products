@@ -22,7 +22,7 @@ Products
 </style>
 {% block content %}
 <table id="productsTable" class="table table-fit table-hover table-striped table-sm table-bordered" cellspacing="0"
-    width="100%">
+    width="100%" data-page-length='25'>
     <thead>
         <tr>
             <th scope="col" class="th-sm">#</th>
@@ -50,13 +50,14 @@ Products
 </table>
 <script>
     $(document).ready(async () => {
-        $('#productsTable').DataTable({
-            "aaSorting": [],
-            columnDefs: [{
-                orderable: false,
-                targets: 3
-            }]
-        });
+        $('#productsTable').DataTable(
+            {
+                "aaSorting": [],
+                columnDefs: [{
+                    orderable: false,
+                    targets: 3,
+                }]
+            });
         $('.dataTables_length').addClass('bs-select');
     });
 </script>

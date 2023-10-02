@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1
-
 # Windows does not support BuildKit yet, so we need to use the old syntax
 # Reference: https://github.com/moby/buildkit/issues/616
 FROM python:3.11.4-slim-buster
