@@ -3,20 +3,14 @@ from uuid import uuid4
 
 from django.db import models
 from django_stubs_ext.db.models import TypedModelMeta
-from djmoney.models.fields import MoneyField  # type: ignore[import]
+from djmoney.models.fields import MoneyField
 
-
-class TimeStampMixin(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta(TypedModelMeta):
-        abstract = True
+from app.common.models import TimeStampMixin
 
 
 @final
 class Category(TimeStampMixin):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     class Meta(TypedModelMeta):
         verbose_name = "Category"
@@ -39,4 +33,4 @@ class Product(TimeStampMixin):
         verbose_name_plural = "Products"
 
     def __str__(self) -> str:
-        return self.name
+        return f"[{self.category}] {self.name}"

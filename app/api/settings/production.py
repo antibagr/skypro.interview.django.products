@@ -4,7 +4,10 @@ from .base import *  # noqa: F401, F403
 
 DEBUG = False
 
-CSRF_TRUSTED_ORIGINS = [f"http://localhost:{os.environ.get('NGINX_PORT'):d}"]
+_PORT = os.environ.get("NGINX_PORT", "")
+if not _PORT.isdigit():
+    raise ValueError("NGINX_PORT must be a digit")
+CSRF_TRUSTED_ORIGINS = [f"http://localhost:{_PORT}"]
 
 CACHES = {
     "default": {

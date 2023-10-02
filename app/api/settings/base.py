@@ -20,9 +20,6 @@ SECRET_KEY: str = cast(str, os.environ.get("SECRET_KEY"))
 
 ALLOWED_HOSTS: list[str] = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(" ")
 
-
-# Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -33,7 +30,9 @@ INSTALLED_APPS = [
     # Third party apps
     "djmoney",
     # Local apps
+    "common.apps.CommonConfig",
     "products.apps.ProductsConfig",
+    "customers.apps.CustomersConfig",
 ]
 
 MIDDLEWARE = [
@@ -46,7 +45,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "app.urls"
+ROOT_URLCONF = "api.urls"
 
 TEMPLATES = [
     {
@@ -64,7 +63,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "app.wsgi.application"
+WSGI_APPLICATION = "api.wsgi.application"
 
 
 DATABASES = {

@@ -30,16 +30,20 @@ Products
             <th scope="col" class="th-sm">Category</th>
             <th scope="col" class="th-sm">Active</th>
             <th scope="col" class="th-sm">Price</th>
+            <th scope="col" class="th-sm">{{ last_month }} sales</th>
+            <th scope="col" class="th-sm">{{ current_month }} sales</th>
         </tr>
     </thead>
     <tbody>
         {% for product in products %}
         <tr>
-            <th scope="row">{{ product.id }}</td>
-            <td>{{ product.name }}</td>
-            <td>{{ product.category }}</td>
-            <td>{{ product.is_active }}</td>
-            <td>{{ product.price }}</td>
+            <th scope="row">{{ product.0 }}</td>
+            <td>{{ product.1 }}</td>
+            <td>{{ categories|get_item:product.2 }}</td>
+            <td>{{ product.3 }}</td>
+            <td>{{ product.4 }}</td>
+            <td>{{ product.5 }}</td>
+            <td>{{ product.6 }}</td>
         </tr>
         {% endfor %}
     </tbody>
