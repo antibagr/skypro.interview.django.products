@@ -41,6 +41,11 @@ class CartItem(models.Model):
         verbose_name = "Cart Item"
         verbose_name_plural = "Cart Items"
 
+        indexes = [
+            models.Index(fields=["product"], name="cartitem_product_idx"),
+            models.Index(fields=["cart"], name="cartitem_cart_idx"),
+        ]
+
 
 @final
 class Cart(TimeStampMixin):
@@ -68,6 +73,3 @@ class Cart(TimeStampMixin):
     class Meta(TypedModelMeta):
         verbose_name = "Cart"
         verbose_name_plural = "Carts"
-        indexes = [
-            models.Index(fields=["purchased_at", "is_purchased"]),
-        ]
