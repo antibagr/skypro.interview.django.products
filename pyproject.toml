@@ -17,10 +17,13 @@ python-dotenv = "1.0.0"
 # NB (a.bagryanov): we use django-stubs imports a lot
 # so we need to install it as a production dependency
 django-stubs = {version = "4.2.3", extras = ["compatible-mypy"]}
+django-debug-toolbar = "4.2.0"
+loguru = "0.7.2"
+psycopg = {extras = ["binary"], version = "3.1.12"}
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "2.0.1"
-bandit = "1.7.4"
+bandit = {extras = ["toml"], version = "1.7.5"}
 black = "23.1.0"
 coverage = "7.2.0"
 flake8 = "6.0.0"
@@ -85,11 +88,14 @@ django_settings_module = "app.api.settings.development"
 [[tool.mypy.overrides]]
 module = [
    "djmoney.*",
+   "faker_commerce",
 ]
 ignore_missing_imports = true
 
 [tool.bandit]
-skips = ["B104"]
+skips = [
+    "B311" # Standard pseudo-random generators are not suitable for security/cryptographic purposes
+]
 
 [tool.pytest.ini_options]
 asyncio_mode = "strict"

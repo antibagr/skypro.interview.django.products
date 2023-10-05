@@ -22,7 +22,8 @@ lint: ## Lint the source code
 
 	poetry run flake8 $(SOURCES)
 	poetry run mypy $(SOURCES)
-	poetry run bandit -r app
+	poetry run bandit -c pyproject.toml -r app
+
 .PHONY: lint
 
 run: ## Run the project
