@@ -4,6 +4,7 @@ import calendar
 import datetime as dt
 from typing import cast, final, NamedTuple
 
+import psycopg
 from django.db import connection, models
 from django.db.models import Q, Sum
 from django.utils import timezone
@@ -96,7 +97,7 @@ class ProductManager(models.Manager["Product"]):
             default=0,
         )
 
-    def get_products_orm_fallback(self, year: int, month: int) -> list[ProductRow]:
+    async def get_products_orm_fallback(self, year: int, month: int) -> list[ProductRow]:
         """
         Parameters
         ----------
@@ -121,7 +122,7 @@ class ProductManager(models.Manager["Product"]):
             year=year, month=month
         )
 
-        return list(
+        products = (
             Product.objects.prefetch_related("category", "cartitem_set__cart")
             .annotate(
                 last_month_sales=self._month_sales_queryset(date_from, date_to),
@@ -138,86 +139,89 @@ class ProductManager(models.Manager["Product"]):
                 "last_month_sales",
                 "current_month_sales",
             )
-            .all()
         )
+        return [p async for p in products]
 
-    def get_products_raw_pg(self, year: int, month: int) -> list[ProductRow]:
-        with connection.cursor() as cursor:
-            cursor.execute(
-                """
-                PREPARE get_products(TIMESTAMP, TIMESTAMP, TIMESTAMP, TIMESTAMP) AS
-                WITH paid_carts AS (
-                        SELECT cart.id
-                            ,cart.purchased_at
-                        FROM customers_cart cart
-                        WHERE cart.is_purchased = TRUE
-                        )
-                    ,this_month_carts AS (
-                        SELECT c.id
-                        FROM paid_carts c
-                        WHERE c.purchased_at >= $1
-                            AND c.purchased_at < $2
-                        )
-                    ,previous_month_carts AS (
-                        SELECT c.id
-                        FROM paid_carts c
-                        WHERE c.purchased_at >= $3
-                            AND c.purchased_at < $4
-                        )
-                    ,category_names AS (
-                        SELECT c.id
-                            ,c.NAME
-                        FROM products_category c
-                        )
-                    ,this_month_items AS (
-                        SELECT items.product_id
-                            ,SUM(items.quantity) AS total
-                        FROM customers_cartitem items
-                        WHERE EXISTS (
-                                SELECT
-                                FROM this_month_carts c
-                                WHERE c.id = items.cart_id
-                                )
-                        GROUP BY items.product_id
-                        )
-                    ,previous_month_items AS (
-                        SELECT items.product_id
-                            ,SUM(items.quantity) AS total
-                        FROM customers_cartitem items
-                        WHERE EXISTS (
-                                SELECT
-                                FROM previous_month_carts c
-                                WHERE c.id = items.cart_id
-                                )
-                        GROUP BY items.product_id
-                        )
-
-                SELECT p.*
+    async def get_products_raw_pg(self, year: int, month: int) -> list[ProductRow]:
+        AGGR_PRODUCTS_SQL = """
+        PREPARE get_products(TIMESTAMP, TIMESTAMP, TIMESTAMP, TIMESTAMP) AS
+        WITH paid_carts AS (
+                SELECT cart.id
+                    ,cart.purchased_at
+                FROM customers_cart cart
+                WHERE cart.is_purchased = TRUE
+                )
+            ,this_month_carts AS (
+                SELECT c.id
+                FROM paid_carts c
+                WHERE c.purchased_at >= $1
+                    AND c.purchased_at < $2
+                )
+            ,previous_month_carts AS (
+                SELECT c.id
+                FROM paid_carts c
+                WHERE c.purchased_at >= $3
+                    AND c.purchased_at < $4
+                )
+            ,category_names AS (
+                SELECT c.id
                     ,c.NAME
-                FROM (
-                    SELECT p.*
-                        ,tm.total
-                    FROM (
-                        SELECT p.id
-                            ,p.NAME
-                            ,p.category_id
-                            ,p.is_active
-                            ,COALESCE(p.price, 0)
-                            ,COALESCE(pm.total, 0)
-                        FROM products_product p
-                        LEFT JOIN previous_month_items pm ON p.id = pm.product_id
-                        ) p
-                    LEFT JOIN this_month_items tm ON p.id = tm.product_id
-                    ) p
-                LEFT JOIN category_names c ON p.category_id = c.id;
+                FROM products_category c
+                )
+            ,this_month_items AS (
+                SELECT items.product_id
+                    ,SUM(items.quantity) AS total
+                FROM customers_cartitem items
+                WHERE EXISTS (
+                        SELECT
+                        FROM this_month_carts c
+                        WHERE c.id = items.cart_id
+                        )
+                GROUP BY items.product_id
+                )
+            ,previous_month_items AS (
+                SELECT items.product_id
+                    ,SUM(items.quantity) AS total
+                FROM customers_cartitem items
+                WHERE EXISTS (
+                        SELECT
+                        FROM previous_month_carts c
+                        WHERE c.id = items.cart_id
+                        )
+                GROUP BY items.product_id
+                )
 
-                EXECUTE get_products(% s, % s, % s, % s);
-                """,
-                self._get_dt_to_filter(year=year, month=month),
-            )
-            return cast(list[ProductRow], cursor.fetchall())
+        SELECT p.*
+            ,c.NAME
+        FROM (
+            SELECT p.*
+                ,tm.total
+            FROM (
+                SELECT p.id
+                    ,p.NAME
+                    ,p.category_id
+                    ,p.is_active
+                    ,COALESCE(p.price, 0)
+                    ,COALESCE(pm.total, 0)
+                FROM products_product p
+                LEFT JOIN previous_month_items pm ON p.id = pm.product_id
+                ) p
+            LEFT JOIN this_month_items tm ON p.id = tm.product_id
+            ) p
+        LEFT JOIN category_names c ON p.category_id = c.id;
 
-    def get_products_aggr(self, year: int, month: int) -> list[ProductRow]:
+        EXECUTE get_products(% s, % s, % s, % s);
+        """
+        conn = await psycopg.AsyncConnection.connect(**connection.get_connection_params())
+        async with conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(
+                    AGGR_PRODUCTS_SQL, self._get_dt_to_filter(year=year, month=month)
+                )
+                products = await cursor.fetchall()
+                return cast(list[ProductRow], products)
+
+    async def get_products_aggr(self, year: int, month: int) -> list[ProductRow]:
         """
         Get a list of products with the following annotations:
         - last_month_sales:
@@ -246,14 +250,14 @@ class ProductManager(models.Manager["Product"]):
                 purchased in the current month
         """
 
-        logger.debug(f"Querying products for {year}-{month}, {connection.vendor=}")
+        logger.debug("[%s] Querying products for %s.%s", connection.vendor, month, year)
 
         match connection.vendor:
             case "postgresql":
-                return self.get_products_raw_pg(year=year, month=month)
+                return await self.get_products_raw_pg(year=year, month=month)
             case _:
-                logger.warning("Unsupported database backend. Falling back to ORM")
-                return self.get_products_orm_fallback(year=year, month=month)
+                logger.warning("[%s] Unsupported database backend. Falling back to ORM", connection.vendor)
+                return await self.get_products_orm_fallback(year=year, month=month)
 
 
 @final
