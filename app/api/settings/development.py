@@ -6,7 +6,6 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": "db.sqlite3",
+        "OPTIONS": {"timeout": 25},
     }
 }
-
-STATICFILES_DIRS = [BASE_DIR.parent / "static"]
