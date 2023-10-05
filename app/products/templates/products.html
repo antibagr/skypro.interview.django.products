@@ -39,7 +39,7 @@ SKYPRODUCT
         <tr>
             <th scope="row">{{ product.0 }}</td>
             <td>{{ product.1 }}</td>
-            <td>{{ categories|get_item:product.2 }}</td>
+            <td>{{ product.2 }}</td>
             <td>{{ product.3 }}</td>
             <td>{{ product.4 }}</td>
             <td>{{ product.5 }}</td>
@@ -49,9 +49,11 @@ SKYPRODUCT
     </tbody>
 </table>
 <script>
+    console.log("Loaded {{ products|length }}");
     $(document).ready(async () => {
         $('#productsTable').DataTable(
             {
+                deferRender: true,
                 "aaSorting": [],
                 columnDefs: [{
                     orderable: false,
