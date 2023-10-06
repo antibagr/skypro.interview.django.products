@@ -4,7 +4,6 @@ import calendar
 import datetime as dt
 from typing import cast, final, NamedTuple
 
-import psycopg
 from django.db import connection, models
 from django.db.models import Q, Sum
 from django.utils import timezone
@@ -97,7 +96,7 @@ class ProductManager(models.Manager["Product"]):
             default=0,
         )
 
-    async def get_products_orm_fallback(self, year: int, month: int) -> list[ProductRow]:
+    def get_products_orm_fallback(self, year: int, month: int) -> list[ProductRow]:
         """
         Parameters
         ----------
@@ -139,10 +138,11 @@ class ProductManager(models.Manager["Product"]):
                 "last_month_sales",
                 "current_month_sales",
             )
+            .all()
         )
-        return [p async for p in products]
+        return cast(list[ProductRow], products)
 
-    async def get_products_raw_pg(self, year: int, month: int) -> list[ProductRow]:
+    def get_products_raw_pg(self, year: int, month: int) -> list[ProductRow]:
         AGGR_PRODUCTS_SQL = """
         PREPARE get_products(TIMESTAMP, TIMESTAMP, TIMESTAMP, TIMESTAMP) AS
         WITH paid_carts AS (
@@ -210,18 +210,17 @@ class ProductManager(models.Manager["Product"]):
             ) p
         LEFT JOIN category_names c ON p.category_id = c.id;
 
-        EXECUTE get_products(% s, % s, % s, % s);
+        EXECUTE get_products(%s, %s, %s, %s);
         """
-        conn = await psycopg.AsyncConnection.connect(**connection.get_connection_params())
-        async with conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute(
-                    AGGR_PRODUCTS_SQL, self._get_dt_to_filter(year=year, month=month)
-                )
-                products = await cursor.fetchall()
-                return cast(list[ProductRow], products)
 
-    async def get_products_aggr(self, year: int, month: int) -> list[ProductRow]:
+        with connection.cursor() as cursor:
+            cursor.execute(
+                AGGR_PRODUCTS_SQL,
+                self._get_dt_to_filter(year=year, month=month),
+            )
+            return cast(list[ProductRow], cursor.fetchall())
+
+    def get_products_aggr(self, year: int, month: int) -> list[ProductRow]:
         """
         Get a list of products with the following annotations:
         - last_month_sales:
@@ -250,14 +249,16 @@ class ProductManager(models.Manager["Product"]):
                 purchased in the current month
         """
 
-        logger.debug("[%s] Querying products for %s.%s", connection.vendor, month, year)
+        logger.debug("[{}] Querying products for {}/{}", connection.vendor, month, year)
 
         match connection.vendor:
             case "postgresql":
-                return await self.get_products_raw_pg(year=year, month=month)
+                return self.get_products_raw_pg(year=year, month=month)
             case _:
-                logger.warning("[%s] Unsupported database backend. Falling back to ORM", connection.vendor)
-                return await self.get_products_orm_fallback(year=year, month=month)
+                logger.warning(
+                    "[{}] Unsupported database backend. Falling back to ORM", connection.vendor
+                )
+                return self.get_products_orm_fallback(year=year, month=month)
 
 
 @final

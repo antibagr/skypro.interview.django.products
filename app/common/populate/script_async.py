@@ -110,16 +110,16 @@ class AsyncPopulator:
         await CartItem.objects.abulk_create(items, ignore_conflicts=True)
 
     async def populate(self) -> None:
-        logger.info("Task #%s spawned", self._task_name)
+        logger.info("Task #{} spawned", self._task_name)
         _start = time.perf_counter()
 
         logger.debug(
-            "Task %s creating %s categories", self._task_name, self._settings.categories_count
+            "Task {} creating {} categories", self._task_name, self._settings.categories_count
         )
         categories = await self.create_categories(amount=self._settings.categories_count)
 
         logger.debug(
-            "Task #%s creating %s products",
+            "Task #{} creating {} products",
             self._task_name,
             self._settings.products_per_category_count,
         )
@@ -129,12 +129,12 @@ class AsyncPopulator:
         )
 
         logger.debug(
-            "Task #%s creating %s customers", self._task_name, self._settings.customers_count
+            "Task #{} creating {} customers", self._task_name, self._settings.customers_count
         )
         customers = await self.create_customers(amount=self._settings.customers_count)
 
         logger.debug(
-            "Task #%s creating %s carts",
+            "Task #{} creating {} carts",
             self._task_name,
             self._settings.carts_per_customer_count * self._settings.customers_count,
         )
@@ -144,7 +144,7 @@ class AsyncPopulator:
         )
 
         logger.debug(
-            "Task #%s creating %s cart items",
+            "Task #{} creating {} cart items",
             self._task_name,
             self._settings.cart_items_per_cart_count * self._settings.carts_per_customer_count,
         )
@@ -155,7 +155,7 @@ class AsyncPopulator:
         )
 
         logger.info(
-            "Task #%s finished in %.2f seconds", self._task_name, time.perf_counter() - _start
+            "Task #{} finished in {} seconds", self._task_name, time.perf_counter() - _start
         )
 
 

@@ -2,10 +2,10 @@ import datetime as dt
 import random
 
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import User
 from django.utils import timezone
 from faker import Faker
 
-from app.common.populate.utils import T
 from app.customers.models import Cart, CartItem, Customer
 from app.products.models import Category, Product
 
@@ -29,7 +29,7 @@ class SingleBakery:
             is_active=self.fake.boolean(),
         )
 
-    def make_user(self, user_model: type[T]) -> T:
+    def make_user(self, user_model: type[User]) -> User:
         return user_model(
             username=self.fake.user_name(),
             email=self.fake.email(),
@@ -37,7 +37,7 @@ class SingleBakery:
             is_active=True,
         )
 
-    def make_customer(self, user_model: type[T]) -> Customer:
+    def make_customer(self, user_model: type[User]) -> Customer:
         return Customer(user=self.make_user(user_model=user_model))
 
     def make_cart(
@@ -84,7 +84,7 @@ class MultiBakery(SingleBakery):
             for category in categories
         ]
 
-    def make_customers(self, user_model: type[T], amount: int) -> list[Customer]:
+    def make_customers(self, user_model: type[User], amount: int) -> list[Customer]:
         return [self.make_customer(user_model=user_model) for _ in range(1, amount + 1)]
 
     def make_carts(

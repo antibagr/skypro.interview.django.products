@@ -107,17 +107,17 @@ class ThreadPopulator(Populator):
         self._thread_name = thread_name
 
     def populate(self) -> None:
-        logger.info("Thread #%s spawned", self._thread_name)
+        logger.info("Thread #{} spawned", self._thread_name)
 
         _start = time.perf_counter()
 
         logger.debug(
-            "Thread %s creating %s categories", self._thread_name, self._settings.categories_count
+            "Thread {} creating {} categories", self._thread_name, self._settings.categories_count
         )
         categories = self.create_categories(amount=self._settings.categories_count)
 
         logger.debug(
-            "Thread #%s creating %s products",
+            "Thread #{} creating {} products",
             self._thread_name,
             self._settings.products_per_category_count,
         )
@@ -127,12 +127,12 @@ class ThreadPopulator(Populator):
         )
 
         logger.debug(
-            "Thread #%s creating %s customers", self._thread_name, self._settings.customers_count
+            "Thread #{} creating {} customers", self._thread_name, self._settings.customers_count
         )
         customers = self.create_customers(amount=self._settings.customers_count)
 
         logger.debug(
-            "Thread #%s creating %s carts",
+            "Thread #{} creating {} carts",
             self._thread_name,
             self._settings.carts_per_customer_count * self._settings.customers_count,
         )
@@ -142,7 +142,7 @@ class ThreadPopulator(Populator):
         )
 
         logger.debug(
-            "Thread #%s creating %s cart items",
+            "Thread #{} creating {} cart items",
             self._thread_name,
             self._settings.cart_items_per_cart_count * self._settings.carts_per_customer_count,
         )
@@ -153,7 +153,7 @@ class ThreadPopulator(Populator):
         )
 
         logger.info(
-            "Thread #%s finished in %.2f seconds", self._thread_name, time.perf_counter() - _start
+            "Thread #{} finished in {} seconds", self._thread_name, time.perf_counter() - _start
         )
 
 
@@ -161,7 +161,7 @@ def run_populator(settings: Settings, thread_name: str) -> None:
     try:
         ThreadPopulator(settings=settings, thread_name=thread_name).populate()
     except Exception as exc:
-        logger.error("Thread #%s failed with exception", thread_name)
+        logger.error("Thread #{} failed with exception", thread_name)
         logger.exception(exc, exc_info=True)
 
 

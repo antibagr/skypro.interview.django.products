@@ -31,9 +31,9 @@ INSTALLED_APPS = [
     "djmoney",
     "debug_toolbar",
     # Local apps
-    "common.apps.CommonConfig",
-    "products.apps.ProductsConfig",
-    "customers.apps.CustomersConfig",
+    "app.common.apps.CommonConfig",
+    "app.products.apps.ProductsConfig",
+    "app.customers.apps.CustomersConfig",
 ]
 
 MIDDLEWARE = [

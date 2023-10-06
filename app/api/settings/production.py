@@ -3,7 +3,7 @@ import os
 from .base import *  # noqa: F401, F403
 from .base import BASE_DIR
 
-DEBUG = False
+DEBUG = True
 
 DATABASES = {
     "default": {

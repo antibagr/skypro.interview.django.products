@@ -10,7 +10,7 @@ from loguru import logger
 from app.products.models import Product
 
 
-async def index(request: HttpRequest) -> HttpResponse:
+def index(request: HttpRequest) -> HttpResponse:
     """
     Fetch all products with aggregated data for current month and previous month sales.
     """
@@ -21,8 +21,9 @@ async def index(request: HttpRequest) -> HttpResponse:
     current_year, current_month = now.year, now.month
 
     logger.debug("Query started")
-    products = await Product.objects.get_products_aggr(year=current_year, month=current_month)
-    logger.debug("Query took %.3f seconds", time.perf_counter() - _start)
+    products = Product.objects.get_products_aggr(year=current_year, month=current_month)
+    products = products[:100]
+    logger.debug("Query took {} seconds", time.perf_counter() - _start)
 
     return render(
         request,

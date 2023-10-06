@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any, cast, final
+from typing import Any, final
 
 from django.conf import settings
 from django.db import models
@@ -21,7 +21,7 @@ class Customer(TimeStampMixin):
     )
 
     def __str__(self) -> str:
-        return cast(str, self.user.username)
+        return self.user.username
 
     class Meta(TypedModelMeta):
         verbose_name = "Customer"
@@ -49,7 +49,7 @@ class CartItem(models.Model):
 
 @final
 class Cart(TimeStampMixin):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="cart")
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="carts")
     items = models.ManyToManyField("products.Product", through=CartItem, related_name="carts")
 
     is_purchased = models.BooleanField(default=False)

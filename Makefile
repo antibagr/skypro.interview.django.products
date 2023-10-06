@@ -26,9 +26,17 @@ lint: ## Lint the source code
 
 .PHONY: lint
 
-run: ## Run the project
-	poetry run python app/main.py
+runserver: ## Run the development Django server
+	poetry run python app/manage.py runserver
 .PHONY: run
+
+compose-up: ## Run the development Django server with docker-compose
+	docker-compose up --build --remove-orphans --force-recreate
+.PHONY: compose-up
+
+compose-down: ## Stop the development Django server with docker-compose
+	docker-compose down
+.PHONY: compose-down
 
 tests-units: ## Run unit tests
 	poetry run coverage run -m pytest -s --junitxml=report.xml ./tests/units

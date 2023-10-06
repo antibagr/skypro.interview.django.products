@@ -7,12 +7,10 @@ from typing import Callable, ParamSpec, TypeVar
 
 import faker_commerce
 from django.contrib.auth import get_user_model
-from django.db import models
 from faker import Faker
 
-T = TypeVar("T", bound=models.Model)
-_T = TypeVar("_T")
 P = ParamSpec("P")
+T = TypeVar("T")
 
 
 logger = logging.getLogger(__name__)
@@ -20,23 +18,19 @@ logger.setLevel(logging.DEBUG)
 logger.addHandler(logging.StreamHandler())
 
 
-def timeit(func: Callable[P, _T]) -> Callable[P, _T]:
-    def wrapper(*args: P.args, **kwargs: P.kwargs) -> _T:
+def timeit(func: Callable[P, T]) -> Callable[P, T]:
+    def wrapper(*args: P.args, **kwargs: P.kwargs) -> T:
         _start = time.perf_counter()
-        logger.debug("Running %s", func.__name__)
+        logger.debug("Running {}", func.__name__)
         results = func(*args, **kwargs)
         logger.debug(
-            "%s took %.2f seconds",
+            "{} took {} seconds",
             func.__name__,
             time.perf_counter() - _start,
         )
         return results
 
     return wrapper
-
-
-async def get_all(model: type[T]) -> list[T]:
-    return [obj async for obj in model.objects.all()]
 
 
 def create_faker() -> Faker:
