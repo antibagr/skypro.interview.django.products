@@ -1,21 +1,23 @@
 {% extends "admin/base.html" %}
-
 {% load static %}
 
 {% block title %}skyproduct Admin{% endblock %}
 
 {% block extrahead %}
-    <link rel="shortcut icon" type="image/png" href="{% static 'images/icon/favicon.ico' %}">
-    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'images/icon/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icon/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icon/favicon-16x16.png' %}">
-    <link rel="manifest" href="{% static 'images/icon/site.webmanifest' %}">
-    <link rel="mask-icon" href="{% static 'images/icon/safari-pinned-tab.svg' %}" color="#5bbad5">
-    <meta name="apple-mobile-web-app-title" content="Skypro Products">
-    <meta name="application-name" content="Skypro Products">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
+<link rel="shortcut icon" type="image/png" href="{% static 'images/icon/favicon.ico' %}">
+<link rel="apple-touch-icon" sizes="76x76" href="{% static 'images/icon/apple-touch-icon.png' %}">
+<link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icon/favicon-32x32.png' %}">
+<link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icon/favicon-16x16.png' %}">
+<link rel="manifest" href="{% static 'images/icon/site.webmanifest' %}">
+<link rel="mask-icon" href="{% static 'images/icon/safari-pinned-tab.svg' %}" color="#5bbad5">
+<meta name="apple-mobile-web-app-title" content="Skypro Products">
+<meta name="application-name" content="Skypro Products">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
 {% endblock %}
+
 {% block branding %}
-    <h1 id="site-name"><a href="{% url 'admin:index' %}">SKYPRODUCT</a></h1>
+<h1 id="site-name">
+    <a href="/">SKYPRODUCT</a>
+</h1>
 {% endblock %}

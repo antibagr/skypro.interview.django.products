@@ -17,8 +17,7 @@ services:
     depends_on:
       - redis
       - db
-    # command: poetry run gunicorn --chdir /app/app api.asgi:application --bind 0.0.0.0:8000 -w 4 -k uvicorn.workers.UvicornWorker
-    command: poetry run python app/manage.py runserver 0.0.0.0:8000
+    command: poetry run gunicorn --chdir /app/app api.asgi:application --bind 0.0.0.0:8000 -w 4 -k uvicorn.workers.UvicornWorker
 
   db:
     image: postgres:16.0
@@ -38,8 +37,7 @@ services:
 
   nginx:
     build:
-      context: .
-      dockerfile: ./nginx/Dockerfile
+      context: ./deploy/nginx
     restart: always
     ports:
       - ${NGINX_PORT}:80

@@ -26,7 +26,7 @@ lint: ## Lint the source code
 
 .PHONY: lint
 
-runserver: ## Run the development Django server
+run: ## Run the development Django server
 	poetry run python app/manage.py runserver
 .PHONY: run
 

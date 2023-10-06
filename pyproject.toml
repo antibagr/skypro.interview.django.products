@@ -19,8 +19,9 @@ python-dotenv = "1.0.0"
 django-stubs = {version = "4.2.3", extras = ["compatible-mypy"]}
 loguru = "0.7.2"
 psycopg = {extras = ["binary"], version = "3.1.12"}
-# TODO (a.bagryanov): add django-debug-toolbar to dev dependencies
-django-debug-toolbar = "^4.2.0"
+# TODO (a.bagryanov): move django-debug-toolbar to dev dependencies
+django-debug-toolbar = "4.2.0"
+whitenoise = "6.5.0"
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "2.0.1"
@@ -90,6 +91,7 @@ django_settings_module = "app.api.settings.development"
 module = [
    "djmoney.*",
    "faker_commerce",
+   "whitenoise.*",  # https://github.com/evansd/whitenoise/pull/410
 ]
 ignore_missing_imports = true
 

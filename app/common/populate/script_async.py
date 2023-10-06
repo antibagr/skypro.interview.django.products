@@ -155,7 +155,7 @@ class AsyncPopulator:
         )
 
         logger.info(
-            "Task #{} finished in {} seconds", self._task_name, time.perf_counter() - _start
+            "Task #{} finished in {:.2f} seconds", self._task_name, time.perf_counter() - _start
         )
 
 

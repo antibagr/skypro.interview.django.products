@@ -153,7 +153,7 @@ class ThreadPopulator(Populator):
         )
 
         logger.info(
-            "Thread #{} finished in {} seconds", self._thread_name, time.perf_counter() - _start
+            "Thread #{} finished in {:.2f} seconds", self._thread_name, time.perf_counter() - _start
         )
 
 

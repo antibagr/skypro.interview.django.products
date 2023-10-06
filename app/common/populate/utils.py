@@ -24,7 +24,7 @@ def timeit(func: Callable[P, T]) -> Callable[P, T]:
         logger.debug("Running {}", func.__name__)
         results = func(*args, **kwargs)
         logger.debug(
-            "{} took {} seconds",
+            "{} took {:.2f} seconds",
             func.__name__,
             time.perf_counter() - _start,
         )

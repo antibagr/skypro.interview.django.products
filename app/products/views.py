@@ -23,7 +23,7 @@ def index(request: HttpRequest) -> HttpResponse:
     logger.debug("Query started")
     products = Product.objects.get_products_aggr(year=current_year, month=current_month)
     products = products[:100]
-    logger.debug("Query took {} seconds", time.perf_counter() - _start)
+    logger.debug("Query took {:.2f} seconds", time.perf_counter() - _start)
 
     return render(
         request,

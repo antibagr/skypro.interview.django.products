@@ -1,7 +1,5 @@
 {% extends "base.html" %}
-{% block title %}
-SKYPRODUCT
-{% endblock %}
+
 <style>
     table.dataTable thead .sorting:after,
     table.dataTable thead .sorting:before,
@@ -51,15 +49,14 @@ SKYPRODUCT
 <script>
     console.log("Loaded {{ products|length }}");
     $(document).ready(async () => {
-        $('#productsTable').DataTable(
-            {
-                deferRender: true,
-                "aaSorting": [],
-                columnDefs: [{
-                    orderable: false,
-                    targets: 3,
-                }]
-            });
+        $('#productsTable').DataTable({
+            deferRender: true,
+            "aaSorting": [],
+            columnDefs: [{
+                orderable: false,
+                targets: 3,
+            }]
+        });
         $('.dataTables_length').addClass('bs-select');
     });
 </script>

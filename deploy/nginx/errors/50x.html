@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Skypro Products</title>
+    <!-- Meta -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Icon -->
+    <link rel="shortcut icon" type="image/png" href="/static/images/icon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="76x76" href="/static/images/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/icon/favicon-16x16.png">
+    <link rel="manifest" href="/static/images/icon/site.webmanifest">
+    <link rel="mask-icon" href="/static/images/icon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="apple-mobile-web-app-title" content="Skypro Products">
+    <meta name="application-name" content="Skypro Products">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <!-- BootsTrap5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css" rel="stylesheet" />
+    <style>
+        /**/
+        :root {
+            --main-color: #eaeaea;
+            --stroke-color: black;
+        }
+
+        h1 {
+            margin: 100px auto 0 auto;
+            color: var(--stroke-color);
+            font-family: 'Encode Sans Semi Condensed', Verdana, sans-serif;
+            font-size: 10rem;
+            line-height: 10rem;
+            font-weight: 200;
+            text-align: center;
+        }
+
+        h2 {
+            margin: 20px auto 30px auto;
+            font-family: 'Encode Sans Semi Condensed', Verdana, sans-serif;
+            font-size: 1.5rem;
+            font-weight: 200;
+            text-align: center;
+        }
+
+        h1,
+        h2 {
+            -webkit-transition: opacity 0.5s linear, margin-top 0.5s linear;
+            /* Safari */
+            transition: opacity 0.5s linear, margin-top 0.5s linear;
+        }
+
+        .loading h1,
+        .loading h2 {
+            margin-top: 0px;
+            opacity: 0;
+        }
+
+        .gears {
+            position: relative;
+            margin: 0 auto;
+            width: auto;
+            height: 0;
+        }
+
+        .gear {
+            position: relative;
+            z-index: 0;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+            border-radius: 50%;
+            background: var(--stroke-color);
+        }
+
+        .gear:before {
+            position: absolute;
+            left: 5px;
+            top: 5px;
+            right: 5px;
+            bottom: 5px;
+            z-index: 2;
+            content: "";
+            border-radius: 50%;
+            background: var(--main-color);
+        }
+
+        .gear:after {
+            position: absolute;
+            left: 25px;
+            top: 25px;
+            z-index: 3;
+            content: "";
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 5px solid var(--stroke-color);
+            box-sizing: border-box;
+            background: var(--main-color);
+        }
+
+        .gear.one {
+            left: -130px;
+        }
+
+        .gear.two {
+            top: -75px;
+        }
+
+        .gear.three {
+            top: -235px;
+            left: 130px;
+        }
+
+        .gear .bar {
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            z-index: 0;
+            width: 150px;
+            height: 30px;
+            margin-top: -15px;
+            border-radius: 5px;
+            background: var(--stroke-color);
+        }
+
+        .gear .bar:before {
+            position: absolute;
+            left: 5px;
+            top: 5px;
+            right: 5px;
+            bottom: 5px;
+            z-index: 1;
+            content: "";
+            border-radius: 2px;
+            background: var(--main-color);
+        }
+
+        .gear .bar:nth-child(2) {
+            transform: rotate(60deg);
+            -webkit-transform: rotate(60deg);
+        }
+
+        .gear .bar:nth-child(3) {
+            transform: rotate(120deg);
+            -webkit-transform: rotate(120deg);
+        }
+
+        @-webkit-keyframes clockwise {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @-webkit-keyframes anticlockwise {
+            0% {
+                -webkit-transform: rotate(360deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(0deg);
+            }
+        }
+
+        @-webkit-keyframes clockwiseError {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+
+            20% {
+                -webkit-transform: rotate(30deg);
+            }
+
+            40% {
+                -webkit-transform: rotate(25deg);
+            }
+
+            60% {
+                -webkit-transform: rotate(30deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(0deg);
+            }
+        }
+
+        @-webkit-keyframes anticlockwiseErrorStop {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+
+            20% {
+                -webkit-transform: rotate(-30deg);
+            }
+
+            60% {
+                -webkit-transform: rotate(-30deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(0deg);
+            }
+        }
+
+        @-webkit-keyframes anticlockwiseError {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+
+            20% {
+                -webkit-transform: rotate(-30deg);
+            }
+
+            40% {
+                -webkit-transform: rotate(-25deg);
+            }
+
+            60% {
+                -webkit-transform: rotate(-30deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(0deg);
+            }
+        }
+
+        .gear.one {
+            -webkit-animation: anticlockwiseErrorStop 2s linear infinite;
+        }
+
+        .gear.two {
+            -webkit-animation: anticlockwiseError 2s linear infinite;
+        }
+
+        .gear.three {
+            -webkit-animation: clockwiseError 2s linear infinite;
+        }
+
+        .loading .gear.one,
+        .loading .gear.three {
+            -webkit-animation: clockwise 3s linear infinite;
+        }
+
+        .loading .gear.two {
+            -webkit-animation: anticlockwise 3s linear infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- partial:index.partial.html -->
+    <div class="container">
+        <ul class="nav p-2 mb-2 bg-primary text-white">
+            <li class="nav-item">
+                <a class="nav-link link-light" href="/">SKYPRODUCT</a>
+            </li>
+        </ul>
+    </div>
+    <div class="d-flex align-items-center justify-content-center vh-100">
+        <div class="text-center">
+
+            <body class="loading flex">
+                <h1 class="display-1 fw-bold">500</h1>
+                <p class="fs-3">
+                    <span class="text-danger">Ouch.</span> Unexpected Error <b>:(</b>
+                </p>
+                <h2>
+                    <a href="/" class="btn btn-primary">Go Home</a>
+                </h2>
+                <div class="gears">
+                    <div class="gear one">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+                    <div class="gear two">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+                    <div class="gear three">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+                </div>
+                <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+            </body>
+        </div>
+    </div>
+    <!-- partial -->
+    <script>
+        $(function () {
+            setTimeout(function () {
+                $('body').removeClass('loading');
+            }, 1000);
+        });
+    </script>
+</body>
+
+</html>
