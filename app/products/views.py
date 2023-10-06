@@ -2,6 +2,7 @@ import calendar
 import datetime as dt
 import time
 
+from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.utils import timezone
@@ -10,6 +11,7 @@ from loguru import logger
 from app.products.models import Product
 
 
+@login_required
 def index(request: HttpRequest) -> HttpResponse:
     """
     Fetch all products with aggregated data for current month and previous month sales.
