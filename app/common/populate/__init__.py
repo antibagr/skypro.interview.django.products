@@ -49,7 +49,7 @@ sys.path.append(str(BASE_DIR))
 
 from app.common.populate.script_async import populate_async  # noqa: E402
 from app.common.populate.script_threads import populate_threads  # noqa: E402
-from app.common.populate.utils import Settings  # noqa: E402
+from app.common.populate.settings import Settings  # noqa: E402
 
 __all__ = [
     "populate_threads",

@@ -1,11 +1,10 @@
 from __future__ import annotations
 
-from datetime import datetime
+import datetime as dt
 from typing import Any, final
 
 from django.conf import settings
 from django.db import models
-from django.utils import timezone
 from django_stubs_ext.db.models import TypedModelMeta
 
 from app.common.models import TimeStampMixin
@@ -62,7 +61,7 @@ class Cart(TimeStampMixin):
         If the cart is not purchased, set the `purchased_at` field to None.
         """
         if self.is_purchased and not self.purchased_at:
-            self.purchased_at = datetime.now(tz=timezone.utc)
+            self.purchased_at = dt.datetime.now(tz=dt.timezone.utc)
         elif self.purchased_at and not self.is_purchased:
             self.purchased_at = None
         super().save(*args, **kwargs)

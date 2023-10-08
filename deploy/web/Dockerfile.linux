@@ -17,7 +17,7 @@ ENV PYTHONDONTWRITEBYTECODE 1 \
 
 COPY pyproject.toml poetry.lock ./
 
-RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --without dev --no-root
+RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --no-interaction --no-ansi --no-root --only main
 
 # The runtime image, used to just run the code provided its virtual environment
 FROM python:3.11.4-slim-buster as runtime

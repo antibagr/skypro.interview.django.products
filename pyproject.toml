@@ -41,7 +41,9 @@ isort = "5.12.0"
 pytest = "7.2.1"
 pytest-asyncio = "0.20.3"
 mypy = "1.4.1"
-flake8-comments = "^0.1.2"
+flake8-comments = "0.1.2"
+pytest-django = "4.5.2"
+flake8-eradicate = "1.5.0"
 
 [tool.poetry.group.populate]
 optional = true
@@ -107,8 +109,12 @@ skips = [
 ]
 
 [tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "app.api.settings.development"
 asyncio_mode = "strict"
 pythonpath = ["."]
+python_files = ["test_*.py", "tests/units/*.py"]
+# addopts = "--reuse-db --no-migrations"
+
 
 [tool.coverage.run]
 source = ["app"]

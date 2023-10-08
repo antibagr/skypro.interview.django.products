@@ -1,25 +1,24 @@
-import calendar
 import datetime as dt
 import time
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-from django.utils import timezone
 from loguru import logger
 
+from app.common.utils import get_month_name
 from app.products.models import Product
 
 
 @login_required
-def index(request: HttpRequest) -> HttpResponse:
+def home(request: HttpRequest) -> HttpResponse:
     """
     Fetch all products with aggregated data for current month and previous month sales.
     """
 
     _start = time.perf_counter()
 
-    now = dt.datetime.now(tz=timezone.utc)
+    now = dt.datetime.now(tz=dt.timezone.utc)
     current_year, current_month = now.year, now.month
 
     logger.debug("Query started")
@@ -32,7 +31,7 @@ def index(request: HttpRequest) -> HttpResponse:
         "products.html",
         {
             "products": products,
-            "last_month": calendar.month_name[current_month - 1],
-            "current_month": calendar.month_name[current_month],
+            "last_month": get_month_name(current_month - 1),
+            "current_month": get_month_name(current_month),
         },
     )

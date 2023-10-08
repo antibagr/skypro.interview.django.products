@@ -3,7 +3,6 @@ import random
 
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
-from django.utils import timezone
 from faker import Faker
 
 from app.customers.models import Cart, CartItem, Customer
@@ -51,7 +50,7 @@ class SingleBakery:
             purchased_at = self.fake.date_time_between(
                 start_date=min_date,
                 end_date=max_date,
-                tzinfo=timezone.utc,
+                tzinfo=dt.timezone.utc,
             )
         else:
             purchased_at = None

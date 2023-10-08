@@ -1,21 +1,16 @@
+import calendar
 import datetime as dt
-import logging
 import os
 import time
-from dataclasses import dataclass
 from typing import Callable, ParamSpec, TypeVar
 
 import faker_commerce
 from django.contrib.auth import get_user_model
 from faker import Faker
+from loguru import logger
 
 P = ParamSpec("P")
 T = TypeVar("T")
-
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-logger.addHandler(logging.StreamHandler())
 
 
 def timeit(func: Callable[P, T]) -> Callable[P, T]:
@@ -51,6 +46,10 @@ def get_month_ago(now: dt.datetime) -> dt.datetime:
     return now.replace(month=now.month - 1, year=now.year - 1)
 
 
+def get_month_name(month: int) -> str:
+    return calendar.month_name[month]
+
+
 def create_admin() -> None:
     """
     Create a superuser with the following credentials:
@@ -63,16 +62,3 @@ def create_admin() -> None:
         os.environ.get("DJANGO_SUPERUSER_EMAIL", "admin@mail.com"),
         os.environ.get("DJANGO_SUPERUSER_PASSWORD", "admin"),
     )
-
-
-@dataclass(frozen=True)
-class Settings:
-    """
-    Settings for populate_async and populate_threads
-    """
-
-    categories_count: int = 100
-    products_per_category_count: int = 1000
-    customers_count: int = 100
-    carts_per_customer_count: int = 5
-    cart_items_per_cart_count: int = 10
