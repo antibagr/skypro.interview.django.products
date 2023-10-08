@@ -2,11 +2,22 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from pathlib import Path
+from typing import cast
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", cast(str, os.environ.get("DJANGO_SETTINGS_MODULE")))
+
+# Add the app directory to the PYTHONPATH
+sys.path.append(Path(__file__).resolve().parent.parent.as_posix())
 
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "app.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api.settings")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

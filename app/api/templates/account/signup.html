@@ -1,0 +1,13 @@
+{% extends "account/base.html" %}
+
+{% block content %}
+
+<body class="text-center">
+  <form class="account-form" method="post" novalidate>
+    {% csrf_token %}
+    {% include 'includes/bs5_form.html' with form=form %}
+    <a class="button secondaryAction" href="{% url 'account_login' %}">Log in instead</a>
+    <button class="primaryAction btn btn-lg btn-primary btn-block" type="submit">Create</button>
+  </form>
+</body>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+<style>
+    table.dataTable thead .sorting:after,
+    table.dataTable thead .sorting:before,
+    table.dataTable thead .sorting_asc:after,
+    table.dataTable thead .sorting_asc:before,
+    table.dataTable thead .sorting_asc_disabled:after,
+    table.dataTable thead .sorting_asc_disabled:before,
+    table.dataTable thead .sorting_desc:after,
+    table.dataTable thead .sorting_desc:before,
+    table.dataTable thead .sorting_desc_disabled:after,
+    table.dataTable thead .sorting_desc_disabled:before {
+        bottom: .5em;
+    }
+
+    .table-fit {
+        width: 1px;
+    }
+</style>
+{% block content %}
+<table id="productsTable" class="table table-fit table-hover table-striped table-sm table-bordered" cellspacing="0"
+    width="100%" data-page-length='25'>
+    <thead>
+        <tr>
+            <th scope="col" class="th-sm">#</th>
+            <th scope="col" class="th-sm">Name</th>
+            <th scope="col" class="th-sm">Category</th>
+            <th scope="col" class="th-sm">Active</th>
+            <th scope="col" class="th-sm">Price</th>
+            <th scope="col" class="th-sm">{{ last_month }} sales</th>
+            <th scope="col" class="th-sm">{{ current_month }} sales</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <th scope="row">{{ product.0 }}</td>
+            <td>{{ product.1 }}</td>
+            <td>{{ product.2 }}</td>
+            <td>{{ product.3 }}</td>
+            <td>{{ product.4 }}</td>
+            <td>{{ product.5 }}</td>
+            <td>{{ product.6 }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script>
+    console.log("Loaded {{ products|length }}");
+    $(document).ready(async () => {
+        $('#productsTable').DataTable({
+            deferRender: true,
+            "aaSorting": [],
+            columnDefs: [{
+                orderable: false,
+                targets: 3,
+            }]
+        });
+        $('.dataTables_length').addClass('bs-select');
+    });
+</script>
+{% endblock %}

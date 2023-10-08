@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% load account %}
+{% load account socialaccount %}
+
+{% block extrahead %}
+<style>
+    .account-form {
+        width: 100%;
+        max-width: 330px;
+        padding: 15px;
+        margin: 0 auto;
+    }
+
+    .account-form .checkbox {
+        font-weight: 400;
+    }
+
+    .account-form .form-control {
+        position: relative;
+        box-sizing: border-box;
+        height: auto;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .account-form .form-control:focus {
+        z-index: 2;
+    }
+
+    .account-form input[type="email"] {
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    .account-form input[type="password"] {
+        margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+</style>
+{% endblock %}

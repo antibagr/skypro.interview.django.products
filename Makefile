@@ -22,23 +22,45 @@ lint: ## Lint the source code
 
 	poetry run flake8 $(SOURCES)
 	poetry run mypy $(SOURCES)
-	poetry run bandit -r app
+	poetry run bandit -c pyproject.toml -r app
+
 .PHONY: lint
 
-run: ## Run the project
-	poetry run python app/main.py
+run: ## Run the development Django server
+	poetry run python app/manage.py runserver
 .PHONY: run
 
+shell: ## Run the development Django shell
+	poetry run python app/manage.py shell
+.PHONY: shell
+
+makemigrations: ## Create new migrations based on the changes detected in the models
+	poetry run python app/manage.py makemigrations
+.PHONY: makemigrations
+
+migrate: ## Apply migrations to the database
+	poetry run python app/manage.py migrate
+.PHONY: migrate
+
+db_update: makemigrations migrate ## Create new migrations and apply them to the database
+.PHONY: db_update
+
+compose-up: ## Run the development Django server with docker-compose
+	docker-compose up --build --remove-orphans --force-recreate
+.PHONY: compose-up
+
+compose-down: ## Stop the development Django server with docker-compose
+	docker-compose down
+.PHONY: compose-down
+
 tests-units: ## Run unit tests
-	poetry run coverage run -m pytest -s --junitxml=report.xml ./tests/units
-	poetry run coverage html
-	# NB (a.kurbatov): Remove "|| true" when coverage level reach 80%.
-	poetry run coverage report --precision=2 --fail-under=80 || true
+	poetry run coverage run -m pytest -s ./tests/units
+	poetry run coverage report  --precision=2 -m
 .PHONY: tests-units
 
 tests-integrations: ## Run integration tests
 	poetry run pytest tests/integrations
 .PHONY: tests-integrations
 
-tests: tests-units tests-integrations ## Run all available tests
-.PHONY: tests
+test: tests-units tests-integrations ## Run all available tests
+.PHONY: test
