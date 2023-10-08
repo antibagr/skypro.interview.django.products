@@ -23,7 +23,7 @@ RUN chmod +x ./entrypoint.sh
 
 COPY pyproject.toml poetry.lock ./
 
-RUN poetry install --without dev --no-root && rm -rf $POETRY_CACHE_DIR
+RUN poetry install --no-interaction --no-ansi --no-root --only main && rm -rf $POETRY_CACHE_DIR
 
 COPY app /app/app/
 

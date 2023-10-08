@@ -10,17 +10,17 @@ from django.contrib.auth import get_user_model
 from django.db.utils import IntegrityError
 from django.utils import timezone
 from faker import Faker
+from loguru import logger
 
-from app.common.populate.bakery import MultiBakery
-from app.common.populate.utils import (
+from app.common.populate.settings import Settings
+from app.common.utils import (
     create_admin,
     create_faker,
     get_last_day_of_month,
     get_month_ago,
-    logger,
-    Settings,
     timeit,
 )
+from app.common.utils.bakery import MultiBakery
 from app.customers.models import Cart, CartItem, Customer
 from app.products.models import Category, Product
 

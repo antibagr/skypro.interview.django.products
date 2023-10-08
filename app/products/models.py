@@ -6,7 +6,6 @@ from typing import cast, final, NamedTuple
 
 from django.db import connection, models
 from django.db.models import Q, Sum
-from django.utils import timezone
 from django_stubs_ext.db.models import TypedModelMeta
 from djmoney.models.fields import MoneyField
 from loguru import logger
@@ -74,8 +73,8 @@ class ProductManager(models.Manager["Product"]):
         _last_day_of_month = calendar.monthrange(year, month)[1]
         date_to = dt.datetime.strptime(d_fmt.format(_last_day_of_month, month, year), "%d.%m.%Y")
 
-        date_from = date_from.replace(tzinfo=timezone.utc)
-        date_to = date_to.replace(tzinfo=timezone.utc)
+        date_from = date_from.replace(tzinfo=dt.timezone.utc)
+        date_to = date_to.replace(tzinfo=dt.timezone.utc)
 
         previous_month_to = date_from - dt.timedelta(days=1)
         previous_month_from = previous_month_to.replace(day=1)
