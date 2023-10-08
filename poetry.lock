@@ -550,7 +550,7 @@ files = [
 django = "*"
 django-stubs-ext = ">=4.2.2"
 mypy = [
-    {version = ">=1.0.0", optional = true, markers = "extra != \"compatible-mypy\""},
+    {version = ">=1.0.0"},
     {version = "==1.4.*", optional = true, markers = "extra == \"compatible-mypy\""},
 ]
 types-pytz = "*"
@@ -1741,5 +1741,5 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 
 [metadata]
 lock-version = "2.0"
-python-versions = "3.11.4"
-content-hash = "e4ccdb2a8aa638338a3ebae1886722e70adb50310b1e255a57ecc61266d8b2f6"
+python-versions = "^3.11.4"
+content-hash = "1bc0380b1f9576b238ea9839f0281eec5d370cfeb5fa9105baf09e2ee89075ae"
