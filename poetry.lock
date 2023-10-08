@@ -550,7 +550,7 @@ files = [
 django = "*"
 django-stubs-ext = ">=4.2.2"
 mypy = [
-    {version = ">=1.0.0"},
+    {version = ">=1.0.0", optional = true, markers = "extra != \"compatible-mypy\""},
     {version = "==1.4.*", optional = true, markers = "extra == \"compatible-mypy\""},
 ]
 types-pytz = "*"
@@ -647,6 +647,23 @@ flake8 = ">=3.0.0"
 
 [package.extras]
 dev = ["coverage", "hypothesis", "hypothesmith (>=0.2)", "pre-commit", "pytest", "tox"]
+
+[[package]]
+name = "flake8-comments"
+version = "0.1.2"
+description = "Find redundant comments in Python code"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "flake8-comments-0.1.2.tar.gz", hash = "sha256:780b4fc2820ed4ff8a0a98f3fc993f776ede1aecbe0c6cec64d93814b21c9234"},
+    {file = "flake8_comments-0.1.2-py3-none-any.whl", hash = "sha256:42250cb4a51dc59e6db25f1291cfb16b78ea233f72dac32a5bc7b09c691235ea"},
+]
+
+[package.dependencies]
+flake8 = "*"
+
+[package.extras]
+test = ["pytest", "pytest-cov"]
 
 [[package]]
 name = "flake8-plugin-utils"
@@ -1725,4 +1742,4 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "3.11.4"
-content-hash = "c0a3be19ed2284b7836d115d8f72526fecc985c60f731392fcd5c0c9bba0909e"
+content-hash = "e4ccdb2a8aa638338a3ebae1886722e70adb50310b1e255a57ecc61266d8b2f6"

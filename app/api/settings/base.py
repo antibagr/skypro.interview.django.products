@@ -128,8 +128,4 @@ STATICFILES_DIRS = [BASE_DIR.parent / "static"]  # noqa: F405
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-INTERNAL_IPS = [
-    "127.0.0.1",
-    "172.21.0.5",
-    "172.18.0.5",
-]
+INTERNAL_IPS: list[str] = os.environ.get("DJANGO_INTERNAL_IPS", "127.0.0.1").split(" ")

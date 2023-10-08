@@ -30,6 +30,21 @@ run: ## Run the development Django server
 	poetry run python app/manage.py runserver
 .PHONY: run
 
+shell: ## Run the development Django shell
+	poetry run python app/manage.py shell
+.PHONY: shell
+
+makemigrations: ## Create new migrations based on the changes detected in the models
+	poetry run python app/manage.py makemigrations
+.PHONY: makemigrations
+
+migrate: ## Apply migrations to the database
+	poetry run python app/manage.py migrate
+.PHONY: migrate
+
+db_update: makemigrations migrate ## Create new migrations and apply them to the database
+.PHONY: db_update
+
 compose-up: ## Run the development Django server with docker-compose
 	docker-compose up --build --remove-orphans --force-recreate
 .PHONY: compose-up
