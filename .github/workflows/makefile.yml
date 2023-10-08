@@ -5,6 +5,9 @@ on: push
 jobs:
   ci:
     runs-on: ubuntu-latest
+    env:
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      DJANGO_SETTINGS_MODULE: app.api.settings.development
     steps:
       - uses: actions/checkout@v3
       - name: Install poetry
