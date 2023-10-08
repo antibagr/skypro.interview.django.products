@@ -1,6 +1,6 @@
 # Skyproduct Django App
 
-![CI Workflow](https://github.com/antibagr/skypro.interview.django.products/actions/workflows/makefile.yml/badge.svg?event=push)
+![CI Workflow](https://github.com/antibagr/skypro.interview.django.products/actions/workflows/makefile.yml/badge.svg?event=push)![coverage badge](./coverage.svg)
 
 The "Skyproduct" Django app is a powerful e-commerce solution designed to manage and display product data efficiently. It provides a comprehensive database for storing product information and offers insightful data analytics for sales. With built-in authentication and deployment using Nginx, Gunicorn, and Unicorn, Skyproduct ensures a secure and high-performance environment for your e-commerce needs.
 

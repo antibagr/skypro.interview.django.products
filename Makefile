@@ -54,10 +54,8 @@ compose-down: ## Stop the development Django server with docker-compose
 .PHONY: compose-down
 
 tests-units: ## Run unit tests
-	poetry run coverage run -m pytest -s --junitxml=report.xml ./tests/units
-	poetry run coverage html
-	# NB: Remove "|| true" when coverage level reach 80%.
-	poetry run coverage report --precision=2 --fail-under=80 || true
+	poetry run coverage run -m pytest -s ./tests/units
+	poetry run coverage report  --precision=2 -m
 .PHONY: tests-units
 
 tests-integrations: ## Run integration tests
