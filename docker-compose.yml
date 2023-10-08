@@ -7,7 +7,7 @@ services:
       dockerfile: deploy/web/Dockerfile.win
     restart: unless-stopped
     env_file:
-      - ./env/env.dev
+      - .env
     expose:
       - 8000
     volumes:
