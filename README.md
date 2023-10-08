@@ -85,12 +85,6 @@ The easiest way to install required and dev dependencies is as follows:
 make install
 ```
 
-To be able to populate database with initial data also run:
-
-```bash
-poetry install --with populate
-```
-
 ### Enviroment variables
 
 | Environment Variable   | Description                                                                                         |
